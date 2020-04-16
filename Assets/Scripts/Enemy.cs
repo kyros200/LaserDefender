@@ -7,12 +7,14 @@ public class Enemy : MonoBehaviour {
     [Header("Attributes")]
     [SerializeField] float health = 100;
     [SerializeField] int score = 100;
+
     [Header("Shoot")]
     [SerializeField] float shotCounter;
     [SerializeField] float minTimeBetweenShots = 0.2f;
     [SerializeField] float maxTimeBetweenShots = 3f;
     [SerializeField] GameObject projectile = null;
     [SerializeField] float projectileSpeed = 10f;
+
     [Header("Death")]
     [SerializeField] GameObject deathVFX = null;
 
@@ -42,6 +44,8 @@ public class Enemy : MonoBehaviour {
             Quaternion.identity
             ) as GameObject;
         laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -projectileSpeed);
+
+        //ShootSFX
     }
 
     private void OnTriggerEnter2D(Collider2D other)
