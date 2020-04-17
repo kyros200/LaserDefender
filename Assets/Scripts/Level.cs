@@ -30,6 +30,7 @@ public class Level : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
+
     public void QuitGame()
     {
         Application.Quit();

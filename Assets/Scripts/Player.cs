@@ -20,12 +20,12 @@ public class Player : MonoBehaviour {
     //[SerializeField] AudioClip deathSFX = null;
     //[SerializeField] [Range(0, 1)] float deathSFXVolume = 0.75f;
 
-    Coroutine firingCoroutine;
-
     float xMin;
     float xMax;
     float yMin;
     float yMax;
+
+    GameSession gameSession = null;
 
     public int getHealth()
     {
@@ -33,6 +33,7 @@ public class Player : MonoBehaviour {
     }
 
     void Start () {
+        gameSession = FindObjectOfType<GameSession>();
         SetUpMoveBoundaries();
         StartCoroutine(FireContinuously());
     }
@@ -62,36 +63,57 @@ public class Player : MonoBehaviour {
 
     IEnumerator FireContinuously()
     {
-        while (true)
+        if (gameSession)
         {
-            //Instantiate Shoot
-            GameObject laser = Instantiate(
-                    laserPrefab,
-                    transform.position,
-                    Quaternion.identity) as GameObject;
-            laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, projectileSpeed);
-            //Shoot SFX
-            AudioSource.PlayClipAtPoint(shootSFX, Camera.main.transform.position, shootSFXVolume);
-            //Shoot CD
-            yield return new WaitForSeconds(projectileFiringPeriod);
+            while (true)
+            {
+                if (gameSession.CheckIfEnemiesAlive() == true)
+                {
+                    //Instantiate Shoot
+                    GameObject laser = Instantiate(
+                            laserPrefab,
+                            transform.position,
+                            Quaternion.identity) as GameObject;
+                    laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, projectileSpeed);
+                    //Shoot SFX
+                    AudioSource.PlayClipAtPoint(shootSFX, Camera.main.transform.position, shootSFXVolume);
+                    //Shoot CD
+                    yield return new WaitForSeconds(projectileFiringPeriod);
+                }
+                else
+                {
+                    Debug.Log("No enemies ahead!!!");
+                    yield return new WaitForSeconds(1f);
+                }
+            }
         }
     }
 
     private void Move()
     {
-        if (Input.GetMouseButton(0))
+        if (gameSession)
         {
-            float step = Time.deltaTime * moveSpeed;
+            if(gameSession.CheckIfEnemiesAlive() == true)
+            {
+                if (Input.GetMouseButton(0))
+                {
+                    float step = Time.deltaTime * moveSpeed;
 
-            Vector3 relativeMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 newMousePosition = new Vector2(relativeMousePosition.x, relativeMousePosition.y);
+                    Vector3 relativeMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector2 newMousePosition = new Vector2(relativeMousePosition.x, relativeMousePosition.y);
 
-            transform.position = Vector2.MoveTowards(transform.position, newMousePosition, step);
+                    transform.position = Vector2.MoveTowards(transform.position, newMousePosition, step);
 
-            var clampedXPos = Mathf.Clamp(transform.position.x, xMin, xMax);
-            var clampedYPos = Mathf.Clamp(transform.position.y, yMin, yMax);
+                    var clampedXPos = Mathf.Clamp(transform.position.x, xMin, xMax);
+                    var clampedYPos = Mathf.Clamp(transform.position.y, yMin, yMax);
 
-            transform.position = new Vector2 (clampedXPos, clampedYPos);
+                    transform.position = new Vector2(clampedXPos, clampedYPos);
+                }
+            }
+            else
+            {
+                transform.position = new Vector2(0, yMax/-2);
+            }
         }
     }
 

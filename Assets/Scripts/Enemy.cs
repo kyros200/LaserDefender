@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour {
             ) as GameObject;
         laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -projectileSpeed);
 
-        //ShootSFX
+        //TODO: ShootSFX
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -61,12 +61,19 @@ public class Enemy : MonoBehaviour {
         damageDealer.Hit();
         if (health <= 0)
         {
-            FindObjectOfType<GameSession>().SetScore(score);
+            GameSession gameSession = FindObjectOfType<GameSession>();
+            if (gameSession)
+            {
+                gameSession.AddScore(score); //Sum the Score
+                gameSession.killOneEnemy(); //game recognize that a enemy died
+            }
+
             GameObject deathParticles = Instantiate(
             deathVFX,
             transform.position,
             Quaternion.identity
             ) as GameObject;
+
             Destroy(deathParticles, 1f);
             Destroy(gameObject);
         }
