@@ -9,6 +9,7 @@ public class UpgradeUI : MonoBehaviour
 
     public void NextWave()
     {
+        FindObjectOfType<GameSession>().AddWaveNumber();
         Instantiate(spawner, new Vector3(0, 0, 0), Quaternion.identity);
     }
 }

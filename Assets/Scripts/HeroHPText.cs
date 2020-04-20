@@ -6,16 +6,16 @@ using UnityEngine.UI;
 public class HeroHPText : MonoBehaviour
 {
     Text displayHP;
-    Player player;
+    GameSession gameSession;
 
     void Start()
     {
         displayHP = GetComponent<Text>();
-        player = FindObjectOfType<Player>();
+        gameSession = FindObjectOfType<GameSession>();
     }
 
     void Update()
     {
-        displayHP.text = player.getHealth().ToString();
+        displayHP.text = gameSession.GetPlayerActualHp().ToString();
     }
 }

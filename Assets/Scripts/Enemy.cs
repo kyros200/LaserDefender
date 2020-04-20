@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour {
     [SerializeField] int score = 100;
 
     [Header("Shoot")]
+    [SerializeField] float shootDmg = 100f;
     [SerializeField] float shotCounter;
     [SerializeField] float minTimeBetweenShots = 0.2f;
     [SerializeField] float maxTimeBetweenShots = 3f;
@@ -44,15 +45,17 @@ public class Enemy : MonoBehaviour {
             Quaternion.identity
             ) as GameObject;
         laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -projectileSpeed);
-
+        laser.GetComponent<DamageDealer>().SetDamage(shootDmg);
         //TODO: ShootSFX
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
-        if (!damageDealer) { return; }
-        ProcessHit(damageDealer);
+        if (damageDealer)
+        {
+            ProcessHit(damageDealer);
+        }
     }
 
     private void ProcessHit(DamageDealer damageDealer)
@@ -61,19 +64,21 @@ public class Enemy : MonoBehaviour {
         damageDealer.Hit();
         if (health <= 0)
         {
+            //death logic
             GameSession gameSession = FindObjectOfType<GameSession>();
             if (gameSession)
             {
                 gameSession.AddScore(score); //Sum the Score
                 gameSession.killOneEnemy(); //game recognize that a enemy died
             }
-
+            //deathVFX
             GameObject deathParticles = Instantiate(
             deathVFX,
             transform.position,
             Quaternion.identity
             ) as GameObject;
-
+            //TODO deathSFX
+            //death Destroy Objects
             Destroy(deathParticles, 1f);
             Destroy(gameObject);
         }

@@ -7,12 +7,10 @@ public class Player : MonoBehaviour {
 
     [Header("Player")]
     [SerializeField] float moveSpeed = 10f;
-    [SerializeField] int health = 200;
 
     [Header("Projectile")]
     [SerializeField] GameObject laserPrefab = null;
     [SerializeField] float projectileSpeed = 10f;
-    [SerializeField] float projectileFiringPeriod = 0.1f;
 
     [Header("Effects")]
     [SerializeField] AudioClip shootSFX = null;
@@ -27,11 +25,6 @@ public class Player : MonoBehaviour {
 
     GameSession gameSession = null;
 
-    public int getHealth()
-    {
-        return health;
-    }
-
     void Start () {
         gameSession = FindObjectOfType<GameSession>();
         SetUpMoveBoundaries();
@@ -45,13 +38,16 @@ public class Player : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other)
     {
         DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
-        if (!damageDealer) { return; }
-        ProcessHit(damageDealer);
+        if (damageDealer)
+        {
+            ProcessHit(damageDealer);
+        }
     }
 
     private void ProcessHit(DamageDealer damageDealer)
     {
-        health -= damageDealer.GetDamage();
+        float health = gameSession.GetPlayerActualHp() - damageDealer.GetDamage();
+        gameSession.SetPlayerActualHp(health);
         damageDealer.Hit();
         if (health <= 0)
         {
@@ -75,14 +71,15 @@ public class Player : MonoBehaviour {
                             transform.position,
                             Quaternion.identity) as GameObject;
                     laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, projectileSpeed);
+                    laser.GetComponent<DamageDealer>().SetDamage(gameSession.GetPlayerDmg());
                     //Shoot SFX
                     AudioSource.PlayClipAtPoint(shootSFX, Camera.main.transform.position, shootSFXVolume);
                     //Shoot CD
-                    yield return new WaitForSeconds(projectileFiringPeriod);
+                    yield return new WaitForSeconds(gameSession.GetPlayerAtkSpeed());
                 }
                 else
                 {
-                    Debug.Log("No enemies ahead!!!");
+                    Debug.Log("Waiting for Upgrades!!!");
                     yield return new WaitForSeconds(1f);
                 }
             }
