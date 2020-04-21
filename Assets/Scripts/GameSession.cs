@@ -53,6 +53,25 @@ public class GameSession : MonoBehaviour
         return playerMaxHp;
     }
 
+    public List<int> GetLevels()
+    {
+        List<int> list = new List<int>();
+        list.Add(levelDmg);
+        list.Add(levelSpeed);
+        list.Add(levelHp);
+
+        return list;
+    }
+
+    public int GetEnemyWave()
+    {
+        return waveNumber;
+    }
+
+    public int GetEnemiesAlive()
+    {
+        return enemiesAlive;
+    }
     #endregion
 
     #region Player Level Up
@@ -60,7 +79,7 @@ public class GameSession : MonoBehaviour
     { 
         bool valid;
 
-        valid = SpendScore(levelDmg* 100);
+        valid = SpendScore((levelDmg + 1) * 100);
 
         if(valid == true)
         {
@@ -73,7 +92,7 @@ public class GameSession : MonoBehaviour
     {
         bool valid;
 
-        valid = SpendScore(levelSpeed * 100);
+        valid = SpendScore((levelSpeed + 1) * 100);
 
         if(valid == true)
         {
@@ -82,12 +101,11 @@ public class GameSession : MonoBehaviour
         }
     }
 
-
     public void AddLevelHp()
     {
         bool valid;
 
-        valid = SpendScore(levelHp * 100);
+        valid = SpendScore((levelHp + 1) * 100);
 
         if (valid == true)
         {
@@ -153,7 +171,7 @@ public class GameSession : MonoBehaviour
 
     #endregion
 
-    #region ScoreUI & ScoreLogic
+    #region ScoreLogic
 
     public int GetScore()
     {
