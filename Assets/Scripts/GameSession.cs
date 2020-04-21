@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameSession : MonoBehaviour
 {
 
-    [SerializeField] int score = 0;
+    [SerializeField] float score = 0;
     [Header("Enemy")]
     [SerializeField] int enemiesAlive = -1;
     [SerializeField] int waveNumber = 1;
@@ -13,7 +13,7 @@ public class GameSession : MonoBehaviour
     [SerializeField] int levelDmg = 0;
     [SerializeField] float playerDmg = 100f;
     [SerializeField] int levelSpeed = 0;
-    [SerializeField] float playerAtkSpeed = 10f;
+    [SerializeField] float playerAtkSpeed = 0.75f;
     [SerializeField] int levelHp = 0;
     [SerializeField] float playerActualHp = 500f;
     [SerializeField] float playerMaxHp = 500f;
@@ -26,7 +26,7 @@ public class GameSession : MonoBehaviour
         upgradeCanvas.SetActive(false);
     }
 
-    #region Get Player Stats
+    #region Get Game Stats
 
     public float GetPlayerDmg()
     {
@@ -84,7 +84,7 @@ public class GameSession : MonoBehaviour
         if(valid == true)
         {
             levelDmg++;
-            playerDmg = 100f * Mathf.Pow(1.03f, (float) levelDmg);
+            playerDmg *= Mathf.Pow(1.03f, (float) levelDmg);
         }
     }
 
@@ -97,7 +97,7 @@ public class GameSession : MonoBehaviour
         if(valid == true)
         {
             levelSpeed++;
-            playerAtkSpeed = 1f * Mathf.Pow(0.95f, (float)levelSpeed);
+            playerAtkSpeed *= 0.95f;
         }
     }
 
@@ -110,7 +110,7 @@ public class GameSession : MonoBehaviour
         if (valid == true)
         {
             levelHp++;
-            playerMaxHp = 500f * Mathf.Pow(1.1f, (float)levelHp);
+            playerMaxHp *= Mathf.Pow(1.1f, (float)levelHp);
             //Refresh Hp
             playerActualHp = playerMaxHp;
         }
@@ -173,12 +173,12 @@ public class GameSession : MonoBehaviour
 
     #region ScoreLogic
 
-    public int GetScore()
+    public float GetScore()
     {
         return score;
     }
 
-    public void AddScore(int value)
+    public void AddScore(float value)
     {
         score += value;
     }

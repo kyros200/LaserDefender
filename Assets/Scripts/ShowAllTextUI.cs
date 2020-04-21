@@ -26,7 +26,7 @@ public class ShowAllTextUI: MonoBehaviour
     private void Update()
     {
         //Text During Gameplay (HP and ActualScore)
-        actualScore.text = gameSession.GetScore().ToString();
+        actualScore.text = gameSession.GetScore().ToString("F2");
         gameplayHp.text = gameSession.GetPlayerActualHp().ToString("F2") + " / " + gameSession.GetPlayerMaxHp().ToString("F2");
         enemyWave.text = gameSession.GetEnemyWave().ToString() + " (" + gameSession.GetEnemiesAlive().ToString() + ")";
         //Upgrade Prices

@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour {
 
     [Header("Attributes")]
     [SerializeField] float health = 100;
-    [SerializeField] int score = 100;
+    [SerializeField] float score = 100;
 
     [Header("Shoot")]
     [SerializeField] float shootDmg = 100f;
@@ -19,9 +19,16 @@ public class Enemy : MonoBehaviour {
     [Header("Death")]
     [SerializeField] GameObject deathVFX = null;
 
+    GameSession gameSession = null;
+
 	void Start () {
         shotCounter = Random.Range(minTimeBetweenShots, maxTimeBetweenShots);
-	}
+        //Set Stats based on Wave Number
+        gameSession = FindObjectOfType<GameSession>();
+        health = health * Mathf.Pow(1.02f, gameSession.GetEnemyWave() - 1);
+        shootDmg = shootDmg * Mathf.Pow(1.03f, gameSession.GetEnemyWave() - 1);
+        score = score * Mathf.Pow(1.01f, gameSession.GetEnemyWave() - 1);
+    }
 	
 	void Update () {
         CountDownAndShoot();

@@ -44,3 +44,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 0
+  enemiesAlive: -1
+  waveNumber: 1
+  levelDmg: 0
+  playerDmg: 100
+  levelSpeed: 0
+  playerAtkSpeed: 1
+  levelHp: 0
+  playerActualHp: 500
+  playerMaxHp: 500
