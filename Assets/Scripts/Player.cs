@@ -15,8 +15,10 @@ public class Player : MonoBehaviour {
     [Header("Effects")]
     [SerializeField] AudioClip shootSFX = null;
     [SerializeField] [Range(0, 1)] float shootSFXVolume = 0.75f;
-    //[SerializeField] AudioClip deathSFX = null;
-    //[SerializeField] [Range(0, 1)] float deathSFXVolume = 0.75f;
+    [SerializeField] AudioClip hitSFX = null;
+    [SerializeField] [Range(0, 1)] float hitSFXVolume = 0.75f;
+    [SerializeField] AudioClip deathSFX = null;
+    [SerializeField] [Range(0, 1)] float deathSFXVolume = 0.75f;
 
     float xMin;
     float xMax;
@@ -53,7 +55,12 @@ public class Player : MonoBehaviour {
         {
             Destroy(gameObject);
             //deathSFX
+            AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position, deathSFXVolume);
             FindObjectOfType<Level>().LoadGameOver();
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(hitSFX, Camera.main.transform.position, hitSFXVolume);
         }
     }
 
@@ -79,7 +86,7 @@ public class Player : MonoBehaviour {
                 }
                 else
                 {
-                    Debug.Log("Waiting for Upgrades!!!");
+                    //Debug.Log("Waiting for Upgrades!!!");
                     yield return new WaitForSeconds(1f);
                 }
             }

@@ -16,7 +16,9 @@ public class Enemy : MonoBehaviour {
     [SerializeField] GameObject projectile = null;
     [SerializeField] float projectileSpeed = 10f;
 
-    [Header("Death")]
+    [Header("Effects")]
+    [SerializeField] AudioClip deathSFX = null;
+    [SerializeField] [Range(0, 1)] float deathSFXVolume = 0.75f;
     [SerializeField] GameObject deathVFX = null;
 
     GameSession gameSession = null;
@@ -25,9 +27,9 @@ public class Enemy : MonoBehaviour {
         shotCounter = Random.Range(minTimeBetweenShots, maxTimeBetweenShots);
         //Set Stats based on Wave Number
         gameSession = FindObjectOfType<GameSession>();
-        health = health * Mathf.Pow(1.02f, gameSession.GetEnemyWave() - 1);
-        shootDmg = shootDmg * Mathf.Pow(1.03f, gameSession.GetEnemyWave() - 1);
-        score = score * Mathf.Pow(1.01f, gameSession.GetEnemyWave() - 1);
+        health = health * Mathf.Pow(1.03f, gameSession.GetEnemyWave() - 1);
+        shootDmg = shootDmg * Mathf.Pow(1.05f, gameSession.GetEnemyWave() - 1);
+        score = score * Mathf.Pow(1.005f, gameSession.GetEnemyWave() - 1);
     }
 	
 	void Update () {
@@ -84,7 +86,8 @@ public class Enemy : MonoBehaviour {
             transform.position,
             Quaternion.identity
             ) as GameObject;
-            //TODO deathSFX
+            //deathSFX
+            AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position, deathSFXVolume);
             //death Destroy Objects
             Destroy(deathParticles, 1f);
             Destroy(gameObject);

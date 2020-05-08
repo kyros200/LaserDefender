@@ -134,11 +134,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  score: 100
+  shootDmg: 100
   shotCounter: 0
   minTimeBetweenShots: 0.2
   maxTimeBetweenShots: 3
   projectile: {fileID: 7855352944437366095, guid: 58d9a09a18149814ea31b479c284dbda,
     type: 3}
+  projectileSpeed: 10
+  deathSFX: {fileID: 8300000, guid: e1579f45afc449343bd698d2b77e628a, type: 3}
+  deathSFXVolume: 0.3
   deathVFX: {fileID: 5173168831922128653, guid: 102c84d4963b2f844a6214fcf2636ce7,
     type: 3}
-  projectileSpeed: 10

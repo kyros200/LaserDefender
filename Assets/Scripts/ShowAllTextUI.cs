@@ -26,9 +26,9 @@ public class ShowAllTextUI: MonoBehaviour
     private void Update()
     {
         //Text During Gameplay (HP and ActualScore)
-        actualScore.text = gameSession.GetScore().ToString("F2");
-        gameplayHp.text = gameSession.GetPlayerActualHp().ToString("F2") + " / " + gameSession.GetPlayerMaxHp().ToString("F2");
-        enemyWave.text = gameSession.GetEnemyWave().ToString() + " (" + gameSession.GetEnemiesAlive().ToString() + ")";
+        actualScore.text = "$:" + gameSession.GetScore().ToString("F2");
+        gameplayHp.text = "HP:" + gameSession.GetPlayerActualHp().ToString("F2") + "\n(" + gameSession.GetPlayerMaxHp().ToString("F2") + ")";
+        enemyWave.text = "Wave:" + gameSession.GetEnemyWave().ToString() + "\n Alive:" + gameSession.GetEnemiesAlive().ToString();
         //Upgrade Prices
         List<int> list = gameSession.GetLevels();
         DmgText.text = "$: " + ((list[0] + 1) * 100).ToString();
@@ -36,10 +36,10 @@ public class ShowAllTextUI: MonoBehaviour
         HpText.text = "$: " + ((list[2] + 1) * 100).ToString();
         //Player Info During Upgrades
         string playerInfo = "";
-        playerInfo += "PLAYER STATUS:\n";
-        playerInfo += "Damage(" + list[0] + "): " + gameSession.GetPlayerDmg().ToString("F2") + "(" + (gameSession.GetPlayerDmg() * 1.03).ToString("F2") + ")\n";
-        playerInfo += "Speed(" + list[1] + "): " + gameSession.GetPlayerAtkSpeed().ToString("F2") + "(" + (gameSession.GetPlayerAtkSpeed() * 0.95).ToString("F2") + ")\n";
-        playerInfo += "HP(" + list[2] + "): " + gameSession.GetPlayerMaxHp().ToString("F2") + "(" + (gameSession.GetPlayerMaxHp() * 1.1).ToString("F2") + ")\n";
+        playerInfo += "==PLAYER STATUS==\n";
+        playerInfo += "Dmg Level " + list[0] + "\n" + gameSession.GetPlayerDmg().ToString("F2") + " (" + (gameSession.GetPlayerDmg() * 1.03).ToString("F2") + ")\n";
+        playerInfo += "Speed Level " + list[1] + "\n" + gameSession.GetPlayerAtkSpeed().ToString("F2") + " seg (" + (gameSession.GetPlayerAtkSpeed() * 0.95).ToString("F2") + " seg)\n";
+        playerInfo += "HP Level " + list[2] + "\n" + gameSession.GetPlayerMaxHp().ToString("F2") + " (" + (gameSession.GetPlayerMaxHp() * 1.1).ToString("F2") + ")\n";
         allPlayerInfo.text = playerInfo;
     }
 

@@ -9,6 +9,9 @@ public class GameSession : MonoBehaviour
     [Header("Enemy")]
     [SerializeField] int enemiesAlive = -1;
     [SerializeField] int waveNumber = 1;
+    [Header("Enemy & Path Prefabs")]
+    [SerializeField] List<GameObject> enemyPrefabs = null;
+    [SerializeField] List<GameObject> pathPrefabs = null;
     [Header("Player")]
     [SerializeField] int levelDmg = 0;
     [SerializeField] float playerDmg = 100f;
@@ -84,7 +87,7 @@ public class GameSession : MonoBehaviour
         if(valid == true)
         {
             levelDmg++;
-            playerDmg *= Mathf.Pow(1.03f, (float) levelDmg);
+            playerDmg *= 1.03f;
         }
     }
 
@@ -110,7 +113,7 @@ public class GameSession : MonoBehaviour
         if (valid == true)
         {
             levelHp++;
-            playerMaxHp *= Mathf.Pow(1.1f, (float)levelHp);
+            playerMaxHp *= 1.1f;
             //Refresh Hp
             playerActualHp = playerMaxHp;
         }
@@ -120,16 +123,24 @@ public class GameSession : MonoBehaviour
     #region Enemy
     public bool CheckIfEnemiesAlive()
     {
-        if(enemiesAlive <= 0)
+        if (upgradeCanvas)
         {
-            //End Wave. Appear UpgradeUI
-            upgradeCanvas.SetActive(true);
-            return false;
+            if(enemiesAlive <= 0)
+            {
+                //End Wave. Appear UpgradeUI
+                upgradeCanvas.SetActive(true);
+                return false;
+            }
+            else
+            {
+                upgradeCanvas.SetActive(false);
+                return true;
+            }
         }
         else
         {
-            upgradeCanvas.SetActive(false);
-            return true;
+            Debug.LogError("Upgrade Canvas not found!!!");
+            return false;
         }
     }
 
@@ -146,6 +157,18 @@ public class GameSession : MonoBehaviour
     public void AddWaveNumber()
     {
         waveNumber++;
+    }
+    #endregion
+
+    #region Get Enemy & Path prefabs
+    public List<GameObject> GetEnemyPrefabs()
+    {
+        return enemyPrefabs;
+    }
+
+    public List<GameObject> GetPathPrefabs()
+    {
+        return pathPrefabs;
     }
     #endregion
 
